@@ -48,7 +48,8 @@ export function resolveFlow(p: Platform, from: NodeRole, to: NodeRole, color: st
 
 /** Replace {gpu} {matrix} … tokens in workload text with this platform's engine names. */
 export function fill(text: string, p: Platform): string {
-  return text.replace(/\{(\w+)\}/g, (m, k: string) => (p.engines as Record<string, string | undefined>)[k] ?? m);
+  const engines: Record<string, string | undefined> = { ...p.engines, mem: p.engines.gpuMemory };
+  return text.replace(/\{(\w+)\}/g, (m, k: string) => engines[k] ?? m);
 }
 
 export function stepsFor(steps: FlowStep[], p: Platform): FlowStep[] {
